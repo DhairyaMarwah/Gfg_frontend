@@ -1,0 +1,106 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800&display=swap");
+body {
+  background: #248ce6;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+.navbar {
+  text-align: center;
+  transform: scale(0.9);
+}
+
+.navbar-wrap {
+  width: 100%;
+  border-bottom: 1px solid rgba(236, 236, 236, 0.4);
+  padding-top: 10px;
+}
+.home-page-content-recorder h1 {
+  font-weight: 600;
+  font-size: 52px;
+  /* identical to box height, or 44% */
+
+  color: #ffffff;
+  margin-bottom: 26px;
+}
+.home-page-content-recorder {
+  text-align: center;
+  transform: scale(0.9);
+  width: 850px;
+  margin: 0 auto;
+  margin-top: 20px;
+}
+.home-page-content-recorder p {
+  font-weight: 400;
+  font-size: 22px;
+  /* or 30px */
+
+  text-align: center;
+
+  color: rgba(255, 255, 255, 0.8);
+}
+.home-page-content-recorder-box {
+  width: 100%;
+  background: #ffffff;
+  box-shadow: 0px 377px 151px rgba(5, 27, 46, 0.01),
+    0px 212px 127px rgba(5, 27, 46, 0.05), 0px 94px 94px rgba(5, 27, 46, 0.09),
+    0px 24px 52px rgba(5, 27, 46, 0.1), 0px 0px 0px rgba(5, 27, 46, 0.1);
+  border-radius: 9px;
+  margin-top: 5rem;
+  padding: 50px;
+  padding-bottom: 30px;
+}
+.home-page-content-recorder-box p {
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 23px;
+  /* identical to box height, or 128% */
+
+  color: #000000;
+  margin-bottom: 30px;
+  margin-top: 25px;
+}
+.home-page-content-recorder-box button {
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 23px;
+  /* identical to box height, or 128% */
+
+  letter-spacing: -0.02em;
+
+  color: #ffffff;
+  background: #248ce6;
+  border-radius: 6px;
+  border: none;
+  padding: 12px 24px;
+  cursor: pointer;
+}
+.home-page-content-transccribe{
+  width: 70%;
+  margin: 0 auto;background: #FFFFFF;
+  border: 3px solid #ADADAD;
+  box-shadow: 0px 377px 151px rgba(5, 27, 46, 0.01), 0px 212px 127px rgba(5, 27, 46, 0.05), 0px 94px 94px rgba(5, 27, 46, 0.09), 0px 24px 52px rgba(5, 27, 46, 0.1), 0px 0px 0px rgba(5, 27, 46, 0.1);
+  border-radius: 17px;padding: 37px;margin-top: 3rem;min-height: 500px;margin-bottom: 40px;
+}
+.home-page-content-transccribe p{
+  font-weight: 500;
+font-size: 16px;
+line-height: 135%;
+/* or 24px */
+
+
+color: rgba(37, 139, 227, 0.75);
+}
+.transcribtion{
+  font-weight: 600;
+font-size: 20px;
+line-height: 135%;
+/* or 27px */
+margin-top: 10px;
+
+
+color: rgba(0, 0, 0, 0.76);
+}
