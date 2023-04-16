@@ -54,11 +54,13 @@ const Home = () => {
       }
     );
   }, []);
-  const [response, setResponse] = useState();
+  const [response, setResponse] = useState("");
   const handleSubmit = () => {
     setLoading(true);
     const formData = new FormData();
-    formData.append("audio", audioFile, "audio.mp3");
+    formData.append("audio", 
+    audioFile
+    , "audio.mp3");
     fetch(apiURL, {
       method: "POST",
       body: formData,
@@ -111,7 +113,7 @@ const Home = () => {
         </div>
         <div className="home-page-content-transccribe">
           <p>Here’s your transcription:</p>
-          {response ? (
+          {response == "" ? (
             <div className="transcribtion">{transcript}</div>
           ) : (
             <div className="transcribtion">{response?.text}</div>
