@@ -1,11 +1,24 @@
 import React, { useState } from "react";
 import Logo from "../../assets/logo.svg";
 import Recorder from "../../assets/recording.svg";
+import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
+
 
 const Home = () => {
   const [recording, setRecording] = useState("Start recording");
   const [show, setShow] = useState(false);
   const [transcription, setTranscription] = useState("");
+
+  const {
+    transcript,
+    listening,
+    resetTranscript,
+    browserSupportsSpeechRecognition
+  } = useSpeechRecognition();
+
+  if (!browserSupportsSpeechRecognition) {
+    return <span>Browser doesn't support speech recognition.</span>;
+  }
 
   const handleRecording = async () => {
     const recognition = new window.webkitSpeechRecognition();
@@ -25,6 +38,8 @@ const Home = () => {
     setRecording("Recording...");
   };
 
+  
+
   return (
     <div className="home-page">
       <div className="navbar-wrap">
@@ -41,16 +56,23 @@ const Home = () => {
           </p>
           <div className="home-page-content-recorder-box">
             <img src={Recorder} alt="" />
-            <p>Start recording whenever you feel like</p>
-            <button onClick={handleRecording}>{recording}</button>
+            {listening ? (
+              <>
+                <p>Stop recording whenever you feel like</p>
+                <button onClick={SpeechRecognition.stopListening}>{'Stop Recording'}</button>
+              </>
+            ) : (
+              <>
+                <p>Start recording whenever you feel like</p>
+                <button onClick={SpeechRecognition.startListening}>{'Start Recording'}</button>
+              </>
+            )}
           </div>
         </div>
-        {show && (
           <div className="home-page-content-transccribe">
             <p>Here’s your transcription:</p>
-            <div className="transcribtion">{transcription}</div>
+            <div className="transcribtion">{transcript}</div>
           </div>
-        )}
       </div>
     </div>
   );

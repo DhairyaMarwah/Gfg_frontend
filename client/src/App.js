@@ -2,6 +2,8 @@ import "./App.css";
 import { BrowserRouter } from "react-router-dom";
 import { Routes, Route } from "react-router-dom";
 import Home from "./pages/Home"; 
+import Demo from "./pages/Demo";
+import Demo2 from "./pages/Demo2";
 const routes = [
   {
     path: "/",
@@ -9,6 +11,12 @@ const routes = [
     element: <Home />,
     private: true,
   },
+  {
+    path : "/demo",
+    exact: true,
+    element: <Demo2 />,
+    private: true,
+  }
 ];
 function App() {
   return (
