@@ -1,59 +1,62 @@
-import React, { useRef, useState, useEffect } from "react";
- 
+import React, { useState, useEffect } from 'react'; 
+import MicRecorder from 'mic-recorder-to-mp3';
+
+const Mp3Recorder = new MicRecorder({ bitRate: 128 });
+
 function App() {
   const [isRecording, setIsRecording] = useState(false);
-  const [audioBlob, setAudioBlob] = useState(null);
-  const mediaRecorderRef = useRef(null);
-  const audioRef = useRef(null);
-  const handleStartRecording = () => {
-    navigator.mediaDevices
-      .getUserMedia({ audio: true })
-      .then((stream) => {
-        mediaRecorderRef.current = new MediaRecorder(stream);
-        mediaRecorderRef.current.start();
+  const [blobURL, setBlobURL] = useState('');
+  const [isBlocked, setIsBlocked] = useState(false);
 
-        setIsRecording(true);
+  const start = () => {
+    if (isBlocked) {
+      console.log('Permission Denied');
+    } else {
+      Mp3Recorder.start()
+        .then(() => setIsRecording(true))
+        .catch((e) => console.error(e));
+    }
+  };
 
-        mediaRecorderRef.current.addEventListener("dataavailable", (event) => {
-          setAudioBlob(event.data);
-        });
+  const stop = () => {
+    Mp3Recorder.stop()
+      .getMp3()
+      .then(([buffer, blob]) => {
+        const blobURL = URL.createObjectURL(blob);
+        setBlobURL(blobURL);
+        setIsRecording(false);
+        console.log(blobURL);
       })
-      .catch((err) => {
-        console.error(err);
-      });
+      .catch((e) => console.log(e));
   };
 
-  const handleStopRecording = () => {
-    mediaRecorderRef.current.stop();
-    setIsRecording(false);
-  };
-
-  const handleSubmit = () => {
-    const formData = new FormData();
-    formData.append("audio", audioBlob);
-    console.log(audioBlob);
-    const bloburl = URL.createObjectURL(audioBlob);
-    console.log(bloburl);
-    audioRef.current.src = bloburl; // set the src attribute of the audio element
-  };
+  useEffect(() => {
+    navigator.getUserMedia(
+      { audio: true },
+      () => {
+        console.log('Permission Granted');
+        setIsBlocked(false);
+      },
+      () => {
+        console.log('Permission Denied');
+        setIsBlocked(true);
+      },
+    );
+  }, []);
 
   return (
-    <>
-      <div>
-        <button onClick={handleStartRecording} disabled={isRecording}>
-          Start Recording
+    <div className="App">
+      <header className="App-header">
+        <button onClick={start} disabled={isRecording}>
+          Record
         </button>
-        <button onClick={handleStopRecording} disabled={!isRecording}>
-          Stop Recording
+        <button onClick={stop} disabled={!isRecording}>
+          Stop
         </button>
-        <button onClick={handleSubmit} disabled={!audioBlob}>
-          Submit
-        </button>
-        <audio ref={audioRef} controls /> 
-      </div>
-    </>
+        <audio src={blobURL} controls="controls" />
+      </header>
+    </div>
   );
 }
-
 
 export default App;
