@@ -36,31 +36,31 @@ const Home = () => {
       .then(([buffer, blob]) => {
         const blobURL = URL.createObjectURL(blob);
         setAudioFile(blob);
+        console.log(blob)
         console.log(blobURL);
         setIsRecording(false);
       })
       .catch((e) => console.log(e));
   };
 
-  useEffect(() => {
-    navigator.mediaDevices.getUserMedia(
-      { audio: true },
-      () => {
-        console.log("Permission Granted");
-      },
-      () => {
-        console.log("Permission Denied");
-        alert("Please allow microphone access to use this app");
-      }
-    );
-  }, []);
+  // useEffect(() => {
+  //   navigator.mediaDevices.getUserMedia(
+  //     { audio: true },
+  //     () => {
+  //       console.log("Permission Granted");
+  //     },
+  //     () => {
+  //       console.log("Permission Denied");
+  //       alert("Please allow microphone access to use this app");
+  //     }
+  //   );
+  // }, []);
   const [response, setResponse] = useState("");
   const handleSubmit = () => {
     setLoading(true);
     const formData = new FormData();
     formData.append("audio", 
-    audioFile
-    , "audio.mp3");
+    audioFile);
     fetch(apiURL, {
       method: "POST",
       body: formData,
