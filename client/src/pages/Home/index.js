@@ -1,13 +1,13 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import Logo from "../../assets/logo.svg";
 import Recorder from "../../assets/recording.svg";
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
+import MicRecorder from 'mic-recorder-to-mp3';
 
+const Mp3Recorder = new MicRecorder({ bitRate: 128 });
 
 const Home = () => {
-  const [recording, setRecording] = useState("Start recording");
-  const [show, setShow] = useState(false);
-  const [transcription, setTranscription] = useState("");
+  const [isRecording, setIsRecording] = useState(false);
 
   const {
     transcript,
@@ -16,28 +16,41 @@ const Home = () => {
     browserSupportsSpeechRecognition
   } = useSpeechRecognition();
 
-  if (!browserSupportsSpeechRecognition) {
-    return <span>Browser doesn't support speech recognition.</span>;
+  // if (!browserSupportsSpeechRecognition) {
+  //   return <span>Browser doesn't support speech recognition.</span>;
+  // }
+
+  const startRecording = () => {
+    SpeechRecognition.startListening();
+    Mp3Recorder.start()
+        .then(() => setIsRecording(true))
+        .catch((e) => console.error(e));
   }
 
-  const handleRecording = async () => {
-    const recognition = new window.webkitSpeechRecognition();
-    recognition.lang = "en-US";
-    recognition.start();
+  const stopRecording = () => {
+    SpeechRecognition.stopListening();
+    Mp3Recorder.stop()
+    .getMp3()
+    .then(([buffer, blob]) => {
+      const blobURL = URL.createObjectURL(blob);
+      console.log(blobURL);
+      setIsRecording(false);
+    })
+    .catch((e) => console.log(e));
+  }
 
-    recognition.onresult = (event) => {
-      const transcript = event.results[0][0].transcript;
-      setTranscription(transcript);
-      setShow(true);
-    };
-
-    recognition.onend = () => {
-      setRecording("Start recording");
-    };
-
-    setRecording("Recording...");
-  };
-
+  useEffect(() => {
+    navigator.getUserMedia(
+      { audio: true },
+      () => {
+        console.log('Permission Granted');
+      },
+      () => {
+        console.log('Permission Denied');
+        alert("Please allow microphone access to use this app");
+      },
+    );
+  }, []);
   
 
   return (
@@ -59,12 +72,12 @@ const Home = () => {
             {listening ? (
               <>
                 <p>Stop recording whenever you feel like</p>
-                <button onClick={SpeechRecognition.stopListening}>{'Stop Recording'}</button>
+                <button onClick={stopRecording}>{'Stop Recording'}</button>
               </>
             ) : (
               <>
                 <p>Start recording whenever you feel like</p>
-                <button onClick={SpeechRecognition.startListening}>{'Start Recording'}</button>
+                <button onClick={startRecording}>{'Start Recording'}</button>
               </>
             )}
           </div>
