@@ -21,7 +21,7 @@ const Home = () => {
   // }
 
   const startRecording = () => {
-    SpeechRecognition.startListening();
+   SpeechRecognition.startListening({ continuous: true });
     Mp3Recorder.start()
         .then(() => setIsRecording(true))
         .catch((e) => console.error(e));
